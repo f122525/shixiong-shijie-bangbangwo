@@ -1,7 +1,7 @@
 {
   "name": "师兄师姐帮帮我",
   "short_name": "师兄师姐帮帮我",
-  "start_url": "./index.html",
+  "start_url": "./index.html?v=1.5.1",
   "display": "standalone",
   "background_color": "#f4f7fb",
   "theme_color": "#0f172a",
