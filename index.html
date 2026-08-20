@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="师兄师姐帮帮我">
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json?v=1.5.1">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>师兄师姐帮帮我</title>
 <style>
@@ -20,11 +20,15 @@ body{margin:0;background:#f4f7fb;color:#0f172a;font-family:-apple-system,BlinkMa
 <script>
 (async()=>{
   try{
-    const r=await fetch('./legacy-v1.3.html',{cache:'no-store'});
+    if('serviceWorker' in navigator){
+      const reg=await navigator.serviceWorker.register('./sw.js?v=1.5.1',{updateViaCache:'none'}).catch(()=>null);
+      if(reg)reg.update().catch(()=>{});
+    }
+    const r=await fetch('./legacy-v1.3.html?v=1.5.1',{cache:'no-store'});
     if(!r.ok)throw new Error('legacy '+r.status);
     let html=await r.text();
     html=html.replace('<span class="small">v1.3</span>','<span class="small">v1.5</span>');
-    html=html.replace('</body>','<script src="./patch-v1.5.js"><\/script></body>');
+    html=html.replace('</body>','<script src="./patch-v1.5.js?v=1.5.1"><\/script></body>');
     document.open();
     document.write(html);
     document.close();
