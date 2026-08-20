@@ -1,5 +1,5 @@
-const CACHE='labcalc-v1.4.0';
-const ASSETS=['./','./index.html','./legacy-v1.3.html','./patch-v1.4.js','./manifest.json','./icon-192.png','./icon-512.png'];
+const CACHE='labcalc-v1.5.0';
+const ASSETS=['./','./index.html','./legacy-v1.3.html','./patch-v1.5.js','./manifest.json','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>e.waitUntil((async()=>{const c=await caches.open(CACHE);await c.addAll(ASSETS);await self.skipWaiting()})()));
 self.addEventListener('activate',e=>e.waitUntil((async()=>{const ks=await caches.keys();await Promise.all(ks.filter(k=>k.startsWith('labcalc-')&&k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim()})()));
 self.addEventListener('fetch',e=>{
