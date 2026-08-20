@@ -11,252 +11,28 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>师兄师姐帮帮我</title>
 <style>
-:root{--bg:#f4f7fb;--card:#fff;--ink:#0f172a;--muted:#64748b;--line:#dbe3ee;--blue:#2563eb;--green:#047857;--amber:#b45309;--red:#b91c1c}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",Arial,sans-serif}
-.app{max-width:980px;margin:auto;padding:14px 14px 52px}header{padding:8px 4px 2px}h1{font-size:27px;margin:6px 0 3px}.subtitle{font-size:13px;color:var(--muted);line-height:1.5}
-.nav{display:flex;gap:7px;overflow:auto;position:sticky;top:0;z-index:20;padding:10px 0;background:rgba(244,247,251,.94);backdrop-filter:blur(12px)}
-.nav button{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 12px;font-weight:750;color:#334155}.nav button.active{background:var(--ink);color:#fff;border-color:var(--ink)}
-.page{display:none}.page.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:15px;margin:11px 0;box-shadow:0 5px 20px rgba(15,23,42,.035)}
-.card h2{font-size:18px;margin:0 0 11px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
-@media(max-width:680px){.grid,.grid3{grid-template-columns:1fr}}label{display:block;font-size:12.5px;font-weight:700;color:#475569;margin-bottom:5px}
-input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px 11px;font-size:16px;background:#fff;color:var(--ink)}textarea{min-height:70px;resize:vertical}
-.hint{font-size:12px;color:var(--muted);line-height:1.45;margin-top:5px}.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.btn{border:1px solid var(--line);background:#fff;color:#334155;padding:10px 14px;border-radius:11px;font-size:14px;font-weight:780}
-.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn.danger{color:var(--red)}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:13px}
-@media(max-width:720px){.metrics{grid-template-columns:1fr 1fr}}@media(max-width:430px){.metrics{grid-template-columns:1fr}}
-.metric{border:1px solid var(--line);background:#f8fafc;border-radius:12px;padding:11px}.metric .k{font-size:11.5px;color:var(--muted);margin-bottom:4px}.metric .v{font-size:20px;font-weight:850}
-.note{margin-top:11px;border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:11px;padding:10px 11px;font-size:12.5px;line-height:1.5}.note.warn{border-color:#fed7aa;background:#fff7ed;color:#9a3412}.note.bad{border-color:#fecaca;background:#fef2f2;color:#991b1b}.note.good{border-color:#a7f3d0;background:#ecfdf5;color:#065f46}
-.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}th,td{padding:8px 7px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top;white-space:nowrap}th:first-child,td:first-child{text-align:left}
-.badge{display:inline-block;border-radius:999px;padding:3px 7px;font-size:11px;font-weight:800;background:#e0f2fe;color:#075985;margin-right:5px}.scenario{border-left:4px solid var(--blue);padding-left:12px}.scenario .q{font-size:14px;line-height:1.6}.answer{display:none;margin-top:8px;padding:10px;border-radius:10px;background:#f8fafc;border:1px dashed #94a3b8;font-size:13px;line-height:1.55}
-.flexbetween{display:flex;justify-content:space-between;gap:10px;align-items:center}.small{font-size:12px;color:var(--muted)}footer{font-size:11.5px;color:var(--muted);line-height:1.5;padding:12px 3px}
-
-.jump-highlight{animation:jumpFlash 1.25s ease-out}
-@keyframes jumpFlash{0%{box-shadow:0 0 0 4px rgba(37,99,235,.30),0 5px 20px rgba(15,23,42,.04)}100%{box-shadow:0 5px 20px rgba(15,23,42,.035)}}
-.transfer-status{margin-top:9px;font-size:12.5px;color:#065f46;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;padding:8px 10px}
-</style></head><body><div class="app">
-<header><h1>师兄师姐帮帮我 <span class="small">v1.3</span></h1><div class="subtitle">确定性计算优先：配液、细胞计数/铺板、药物处理、动物给药、库存与历史记录。所有计算默认在本机完成。</div></header>
-<nav class="nav" id="nav">
-<button class="active" data-page="quick">配液</button><button data-page="cells">细胞</button><button data-page="drug">药敏</button><button data-page="animal">动物</button><button data-page="virus">病毒/MOI</button><button data-page="inventory">库存</button><button data-page="history">历史</button><button data-page="validation">验证题</button>
-</nav>
-<section class="page active" id="quick">
-<div class="card"><h2>C₁V₁ = C₂V₂ 万能稀释</h2><div class="grid3">
-<div><label>母液浓度 C₁</label><input id="q_c1" type="number" step="any" value="20"></div><div><label>母液单位</label><select id="q_u1"><option>mg/mL</option><option>µg/mL</option><option>ng/mL</option></select></div>
-<div><label>目标浓度 C₂</label><input id="q_c2" type="number" step="any" value="0.6"></div><div><label>目标单位</label><select id="q_u2"><option>mg/mL</option><option>µg/mL</option><option>ng/mL</option></select></div>
-<div><label>最终体积 V₂</label><input id="q_v2" type="number" step="any" value="1"></div><div><label>体积单位</label><select id="q_vu"><option>mL</option><option>µL</option></select></div>
-</div><div class="row"><button class="btn primary" onclick="calcDilution()">计算</button><button class="btn" onclick="saveCalc('万能稀释',$('q_out').innerText)">保存到历史</button></div><div id="q_out"></div></div>
-<div class="card"><h2>连续等比稀释</h2><div class="grid3">
-<div><label>最高浓度</label><input id="s_high" type="number" step="any" value="100"></div><div><label>稀释倍数</label><input id="s_factor" type="number" step="any" value="3"></div><div><label>点数</label><input id="s_n" type="number" step="1" value="7"></div>
-<div><label>每个浓度最终需要体积</label><input id="s_vol" type="number" step="any" value="400"></div><div><label>体积单位</label><select id="s_vu"><option>µL</option><option>mL</option></select></div><div><label>是否加入 0 对照</label><select id="s_zero"><option value="1">是</option><option value="0">否</option></select></div>
-</div><div class="row"><button class="btn primary" onclick="calcSeries()">生成</button></div><div id="s_out"></div></div>
-<div class="card"><h2>培养基 / 添加剂配制</h2><div class="grid">
-<div><label>最终总体积（mL）</label><input id="m_total" type="number" step="any" value="500"></div><div><label>FBS 最终比例（%）</label><input id="m_fbs" type="number" step="any" value="10"></div>
-<div><label>抗生素母液倍数（×）</label><input id="m_psx" type="number" step="any" value="100"></div><div><label>抗生素目标倍数（×）</label><input id="m_pstarget" type="number" step="any" value="1"></div></div>
-<div class="row"><button class="btn primary" onclick="calcMedium()">计算</button></div><div id="m_out"></div></div>
-</section>
-<section class="page" id="cells">
-<div class="card"><h2>细胞计数 / 计数仪结果</h2>
-<div class="note">推荐直接按实验室常见格式输入：例如 <b>2.4 × 10⁶ cells/mL</b>，只填“2.4”和“6”，不需要先换算成 2400000。</div>
-<div class="grid3">
-<div><label>计数结果系数</label><input id="cc_coef" type="number" step="any" value="2.4"></div>
-<div><label>×10 的指数</label><input id="cc_exp" type="number" step="1" value="6"><div class="hint">例：2.4 × 10⁶ → 填 2.4 和 6。</div></div>
-<div><label>活率（%）</label><input id="cc_viab" type="number" step="any" value="85"></div>
-</div>
-<div class="row"><button type="button" class="btn primary" onclick="calcCounterResult()">计算</button><button type="button" class="btn" onclick="useCounterForPlate()">带入铺板并计算</button><button type="button" class="btn" onclick="useCounterForResuspend()">带入重悬并计算</button></div>
-<div id="cc_transfer_status"></div>
-<div id="cc_out"></div>
-<h3 style="margin-top:18px">手工血球计数板（可选）</h3>
-<div class="hint">只有在你需要从四个大格/多个计数格的原始数字开始算时使用。</div>
-<div class="grid">
-<div><label>计数格结果（逗号分隔）</label><textarea id="hc_counts">85,92,88,95</textarea></div>
-<div><label>样品总稀释倍数</label><input id="hc_dil" type="number" step="any" value="2"><div class="hint">例如细胞液:台盼蓝 = 1:1，则稀释倍数=2。</div></div>
-<div><label>计数板换算因子</label><input id="hc_factor" type="number" step="any" value="10000"><div class="hint">常规血球计数板大格通常使用 ×10⁴。</div></div>
-<div><label>活率（%）</label><input id="hc_viab" type="number" step="any" value="100"></div>
-</div>
-<div class="row"><button class="btn" onclick="calcHemocytometer()">从原始计数格计算</button></div><div id="hc_out"></div></div>
-<div class="card" id="resuspend_card"><h2>细胞重悬</h2><div class="grid3">
-<div><label>当前浓度系数</label><input id="r_coef" type="number" step="any" value="3"></div>
-<div><label>当前浓度指数 ×10ⁿ</label><input id="r_exp" type="number" step="1" value="6"></div>
-<div><label>当前体积（mL）</label><input id="r_vol" type="number" step="any" value="2"></div>
-<div><label>活率（%）</label><input id="r_viab" type="number" step="any" value="100"></div>
-<div><label>目标浓度系数</label><input id="r_tcoef" type="number" step="any" value="5"></div>
-<div><label>目标浓度指数 ×10ⁿ</label><input id="r_texp" type="number" step="1" value="5"></div>
-</div><div class="hint">例：当前 3.0 × 10⁶ cells/mL → 填 3 和 6；目标 5.0 × 10⁵ cells/mL → 填 5 和 5。</div>
-<div class="row"><button class="btn primary" onclick="calcResuspend()">计算</button></div><div id="r_out"></div></div>
-<div class="card" id="plate_card"><h2>铺板计算</h2><div class="grid3">
-<div><label>来源活细胞浓度系数</label><input id="p_coef" type="number" step="any" value="2.4"></div><div><label>来源浓度指数 ×10ⁿ</label><input id="p_exp" type="number" step="1" value="6"></div><div><label>每孔细胞数</label><input id="p_cells" type="number" step="any" value="5000"></div><div><label>实际使用孔数</label><input id="p_wells" type="number" step="1" value="72"></div>
-<div><label>每孔铺板体积（µL）</label><input id="p_vol" type="number" step="any" value="100"></div><div><label>额外余量（%）</label><input id="p_over" type="number" step="any" value="10"></div><div><label>板型快速值</label><select id="p_plate" onchange="platePreset()"><option value="">自定义</option><option value="6">6孔</option><option value="12">12孔</option><option value="24">24孔</option><option value="48">48孔</option><option value="96">96孔</option><option value="384">384孔</option></select></div>
-</div><div class="row"><button class="btn primary" onclick="calcPlate()">计算</button><button class="btn" onclick="saveCalc('铺板计算',$('p_out').innerText)">保存到历史</button></div><div id="p_out"></div></div>
-</section>
-<section class="page" id="drug">
-<div class="card"><h2>细胞药物处理 / CCK-8 配液</h2><div class="grid3">
-<div><label>药物母液浓度</label><input id="d_stock" type="number" step="any" value="20"></div><div><label>母液单位</label><select id="d_unit"><option>mg/mL</option><option>µg/mL</option></select></div><div><label>目标终浓度单位</label><select id="d_tunit"><option>µg/mL</option><option>mg/mL</option></select></div>
-<div><label>孔内已有培养液（µL）</label><input id="d_existing" type="number" step="any" value="90"></div><div><label>计划加药体积（µL）</label><input id="d_add" type="number" step="any" value="10"></div><div><label>每个浓度复孔数</label><input id="d_reps" type="number" step="1" value="3"></div>
-<div><label>相同方案的细胞系/组数</label><input id="d_sets" type="number" step="1" value="1"></div><div><label>配液余量（%）</label><input id="d_over" type="number" step="any" value="20"></div><div><label>最低可靠移液量（µL）</label><input id="d_minpip" type="number" step="any" value="1"></div>
-</div><div style="margin-top:11px"><label>目标终浓度（逗号分隔）</label><textarea id="d_concs">0,0.01,0.1,1,10,30,100</textarea></div>
-<div class="row"><button class="btn primary" onclick="calcDrug()">计算完整配液需求</button><button class="btn" onclick="saveCalc('细胞药敏',$('d_out').innerText)">保存到历史</button></div><div id="d_out"></div></div>
-</section>
-<section class="page" id="animal">
-<div class="card"><h2>小鼠给药（按实际体重）</h2><div class="grid3">
-<div><label>母液浓度（mg/mL）</label><input id="a_stock" type="number" step="any" value="20"></div><div><label>目标剂量（mg/kg）</label><input id="a_dose" type="number" step="any" value="3"></div><div><label>给药体积标准（mL/kg）</label><input id="a_volkg" type="number" step="any" value="5"></div>
-<div><label>整组配液余量（%）</label><input id="a_over" type="number" step="any" value="10"></div><div><label>计划给药次数</label><input id="a_times" type="number" step="1" value="1"></div><div><label>路线备注</label><input id="a_route" value="IV / 尾静脉"></div>
-</div><div style="margin-top:11px"><label>每只小鼠体重（g，逗号/空格分隔）</label><textarea id="a_weights">18.6,19.4,20.1,21.3,20.8,19.7,20.5,18.9</textarea></div>
-<div class="row"><button class="btn primary" onclick="calcAnimal()">计算</button><button class="btn" onclick="saveCalc('小鼠给药',$('a_out').innerText)">保存到历史</button></div><div id="a_out"></div></div>
-</section>
-<section class="page" id="virus">
-<div class="card"><h2>体外病毒感染：目标 MOI → 病毒体积</h2>
-<div class="note">MOI = infectious units / target cells。PFU、TU、IFU、TCID50 是不同滴度体系，本工具只保留单位标签，不自动互相换算。</div>
-<div class="grid3">
-<div><label>病毒滴度系数</label><input id="v_tcoef" type="number" step="any" value="2"></div>
-<div><label>病毒滴度指数 ×10ⁿ</label><input id="v_texp" type="number" step="1" value="8"></div>
-<div><label>滴度单位</label><select id="v_tunit"><option>PFU/mL</option><option>TU/mL</option><option>IFU/mL</option><option>TCID50/mL</option><option>自定义/mL</option></select></div>
-<div><label>每孔细胞数系数</label><input id="v_ccoef" type="number" step="any" value="1"></div>
-<div><label>每孔细胞数指数 ×10ⁿ</label><input id="v_cexp" type="number" step="1" value="4"></div>
-<div><label>感染孔数 / 培养单位数</label><input id="v_wells" type="number" step="1" value="24"></div>
-<div><label>目标 MOI</label><input id="v_moi" type="number" step="any" value="0.5"></div>
-<div><label>额外余量（%）</label><input id="v_over" type="number" step="any" value="10"></div>
-<div><label>最低可靠移液量（µL）</label><input id="v_minpip" type="number" step="any" value="1"></div>
-</div>
-<div class="row"><button class="btn primary" onclick="calcVirusMOI()">计算</button><button class="btn" onclick="saveCalc('病毒 MOI',document.getElementById('v_out').innerText)">保存到历史</button></div>
-<div id="v_out"></div></div>
-
-<div class="card"><h2>反向计算：已加病毒体积 → 实际 MOI</h2>
-<div class="grid3">
-<div><label>病毒滴度系数</label><input id="vr_tcoef" type="number" step="any" value="1"></div>
-<div><label>病毒滴度指数 ×10ⁿ</label><input id="vr_texp" type="number" step="1" value="8"></div>
-<div><label>滴度单位</label><select id="vr_tunit"><option>PFU/mL</option><option>TU/mL</option><option>IFU/mL</option><option>TCID50/mL</option><option>自定义/mL</option></select></div>
-<div><label>实际加入病毒原液（µL）</label><input id="vr_vol" type="number" step="any" value="5"></div>
-<div><label>目标细胞数系数</label><input id="vr_ccoef" type="number" step="any" value="2"></div>
-<div><label>目标细胞数指数 ×10ⁿ</label><input id="vr_cexp" type="number" step="1" value="5"></div>
-</div>
-<div class="row"><button class="btn primary" onclick="calcReverseMOI()">反算 MOI</button></div><div id="vr_out"></div></div>
-
-<div class="card"><h2>Poisson 理论感染比例</h2>
-<div class="grid">
-<div><label>MOI</label><input id="vp_moi" type="number" step="any" value="1"></div>
-<div><label>显示详细概率</label><select id="vp_detail"><option value="1">显示 0次 / 1次 / ≥2次</option><option value="0">只看至少感染1次</option></select></div>
-</div>
-<div class="row"><button class="btn primary" onclick="calcPoisson()">计算</button></div><div id="vp_out"></div></div>
-
-<div class="card"><h2>体内病毒剂量：infectious units / mouse</h2>
-<div class="note warn">动物体内通常不用 MOI 描述病毒剂量，而写 PFU/mouse、TU/mouse 等。这里只计算总量和原液体积，不替你决定给药途径、剂量或频率。</div>
-<div class="grid3">
-<div><label>病毒滴度系数</label><input id="vi_tcoef" type="number" step="any" value="1"></div>
-<div><label>病毒滴度指数 ×10ⁿ</label><input id="vi_texp" type="number" step="1" value="8"></div>
-<div><label>滴度单位</label><select id="vi_tunit"><option>PFU/mL</option><option>TU/mL</option><option>IFU/mL</option><option>TCID50/mL</option><option>自定义/mL</option></select></div>
-<div><label>每只目标剂量系数</label><input id="vi_dcoef" type="number" step="any" value="1"></div>
-<div><label>每只目标剂量指数 ×10ⁿ</label><input id="vi_dexp" type="number" step="1" value="7"></div>
-<div><label>动物数量</label><input id="vi_n" type="number" step="1" value="8"></div>
-<div><label>额外余量（%）</label><input id="vi_over" type="number" step="any" value="10"></div>
-<div><label>计划给药次数</label><input id="vi_times" type="number" step="1" value="1"></div>
-<div><label>最低可靠移液量（µL）</label><input id="vi_minpip" type="number" step="any" value="1"></div>
-</div>
-<div class="row"><button class="btn primary" onclick="calcVirusInVivo()">计算</button></div><div id="vi_out"></div></div>
-</section>
-<section class="page" id="inventory">
-<div class="card"><div class="flexbetween"><h2>药物 / 试剂库存</h2><button class="btn" onclick="exportData()">导出备份</button></div><div class="grid3">
-<div><label>名称</label><input id="i_name" value="T-DXd"></div><div><label>批次 / 编号</label><input id="i_batch" placeholder="例如 20260816-01"></div><div><label>浓度（mg/mL）</label><input id="i_conc" type="number" step="any" value="20"></div>
-<div><label>现有体积（µL）</label><input id="i_vol" type="number" step="any" value="100"></div><div><label>保存条件</label><input id="i_storage" value="-80°C / 避光"></div><div><label>冻融次数</label><input id="i_ft" type="number" step="1" value="0"></div>
-</div><div class="row"><button class="btn primary" onclick="addInventory()">加入库存</button><label class="btn" style="cursor:pointer">导入备份<input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"></label></div><div id="i_out"></div></div>
-</section>
-<section class="page" id="history"><div class="card"><div class="flexbetween"><h2>计算历史</h2><button class="btn danger" onclick="clearHistory()">清空</button></div><div id="h_out"></div></div></section>
-<section class="page" id="validation">
-<div class="card"><div class="flexbetween"><h2>内置自检</h2><button class="btn primary" onclick="runSelfTests()">运行自检</button></div><div class="hint">这些测试用于验证核心公式是否被意外改坏。应全部 PASS。</div><div id="test_out"></div></div>
-<div class="card"><h2>常见实验场景验证题</h2><div class="hint">建议先用 App 自己算，再点“查看参考答案”。</div><div id="scenario_list"></div></div>
-</section>
-<footer><span class="badge">离线计算</span><span class="badge">本地库存</span><span class="badge">可导出备份</span><p>本工具只做数学与流程换算，不替代药品说明书、动物伦理、机构SOP或专业判断。具体给药途径、稀释液、稳定性、最大给药体积等请按获批方案执行。</p></footer>
-</div>
+body{margin:0;background:#f4f7fb;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+.loading{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}.loading-card{background:#fff;border:1px solid #dbe3ee;border-radius:18px;padding:22px;max-width:420px;box-shadow:0 8px 28px rgba(15,23,42,.06)}.loading-card b{display:block;font-size:20px;margin-bottom:8px}.loading-card span{color:#64748b;font-size:13px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="loading"><div class="loading-card"><b>师兄师姐帮帮我 v1.4</b><span>正在加载实验工具与本地库存数据…</span></div></div>
 <script>
-const $=id=>document.getElementById(id),fmt=(x,n=4)=>Number.isFinite(x)?(+x.toFixed(n)).toString():"—";
-function sciValue(coef,exp){return (+coef)*Math.pow(10,+exp)}
-function sciText(x,d=3){if(!Number.isFinite(x)||x===0)return "0";const e=Math.floor(Math.log10(Math.abs(x)));const c=x/Math.pow(10,e);return `${fmt(c,d)} × 10^${e}`}
-function splitSci(x){if(!(x>0))return [0,0];const e=Math.floor(Math.log10(x));return [x/Math.pow(10,e),e]}
-function parseNums(s,zero=false){return s.split(/[\s,，;；]+/).map(Number).filter(x=>Number.isFinite(x)&&(zero?x>=0:x>0))}
-function toMgMl(v,u){return u==="mg/mL"?v:u==="µg/mL"?v/1000:v/1000000}function volToMl(v,u){return u==="µL"?v/1000:v}
-function metric(k,v){return `<div class="metric"><div class="k">${k}</div><div class="v">${v}</div></div>`}function showError(id,m){$(id).innerHTML=`<div class="note bad">${m}</div>`}
-document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#nav button").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.page).classList.add("active");if(b.dataset.page==="inventory")renderInventory();if(b.dataset.page==="history")renderHistory()});
-function calcDilution(){let c1=toMgMl(+$("q_c1").value,$("q_u1").value),c2=toMgMl(+$("q_c2").value,$("q_u2").value),v2=volToMl(+$("q_v2").value,$("q_vu").value);if(!(c1>0&&c2>=0&&v2>0))return showError("q_out","请检查输入。");const v1=c2*v2/c1,d=v2-v1;$("q_out").innerHTML=`<div class="metrics">${metric("取母液 V₁",fmt(v1*1000,3)+" µL")}${metric("加入稀释液",fmt(d*1000,3)+" µL")}${metric("最终总体积",fmt(v2*1000,3)+" µL")}</div>${d<0?'<div class="note bad">目标浓度高于母液浓度，不能靠稀释得到。</div>':'<div class="note">公式：C₁V₁=C₂V₂。</div>'}`}
-function calcSeries(){const h=+$("s_high").value,f=+$("s_factor").value,n=+$("s_n").value,v=+$("s_vol").value;if(!(h>0&&f>1&&n>=1&&v>0))return showError("s_out","请检查输入。");let r="";for(let i=0;i<n;i++)r+=`<tr><td>${i+1}</td><td>${fmt(h/Math.pow(f,i),6)}</td><td>${fmt(v,2)} ${$("s_vu").value}</td></tr>`;if($("s_zero").value==="1")r+=`<tr><td>对照</td><td>0</td><td>${fmt(v,2)} ${$("s_vu").value}</td></tr>`;$("s_out").innerHTML=`<div class="scroll"><table><thead><tr><th>点</th><th>浓度</th><th>最终所需体积</th></tr></thead><tbody>${r}</tbody></table></div><div class="note">这里生成目标浓度序列；逐管连续稀释时需额外考虑下一步转移体积。</div>`}
-function calcMedium(){const t=+$("m_total").value,f=+$("m_fbs").value,x=+$("m_psx").value,y=+$("m_pstarget").value;if(!(t>0&&f>=0&&f<=100&&x>0&&y>=0))return showError("m_out","请检查输入。");const fv=t*f/100,pv=t*y/x,b=t-fv-pv;$("m_out").innerHTML=`<div class="metrics">${metric("FBS",fmt(fv,2)+" mL")}${metric("抗生素母液",fmt(pv,2)+" mL")}${metric("基础培养基补足",fmt(b,2)+" mL")}</div><div class="note">按最终总体积 ${fmt(t)} mL 计算。</div>`}
-function calcCounterResult(){const c=+$("cc_coef").value,e=+$("cc_exp").value,v=+$("cc_viab").value/100;if(!(c>0&&Number.isFinite(e)&&v>=0&&v<=1))return showError("cc_out","请检查输入。");const total=sciValue(c,e),live=total*v;$("cc_out").innerHTML=`<div class="metrics">${metric("总细胞浓度",sciText(total)+" cells/mL")}${metric("活细胞浓度",sciText(live)+" cells/mL")}${metric("活率",fmt(v*100,1)+"%")}</div><div class="note">后续铺板通常按活细胞浓度计算。点击“带入铺板并计算”会自动跳到铺板结果。</div>`}
-function flashAndScroll(id){const el=$(id);if(!el)return;el.classList.remove("jump-highlight");void el.offsetWidth;el.classList.add("jump-highlight");el.scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>el.classList.remove("jump-highlight"),1400)}
-function transferStatus(msg){const el=$("cc_transfer_status");if(el)el.innerHTML=`<div class="transfer-status">${msg}</div>`}
-function useCounterForPlate(){const c=+$("cc_coef").value,e=+$("cc_exp").value,v=+$("cc_viab").value/100;if(!(c>0&&Number.isFinite(e)&&v>=0&&v<=1)){showError("cc_out","请先填写有效计数结果。");return}const live=sciValue(c,e)*v,[co,ex]=splitSci(live);$("p_coef").value=+co.toPrecision(5);$("p_exp").value=ex;calcPlate();transferStatus(`已将活细胞浓度 <b>${sciText(live)} cells/mL</b> 带入铺板，并完成计算。`);setTimeout(()=>flashAndScroll("plate_card"),60)}
-function useCounterForResuspend(){const c=+$("cc_coef").value,e=+$("cc_exp").value,v=+$("cc_viab").value;if(!(c>0&&Number.isFinite(e)&&v>=0&&v<=100)){showError("cc_out","请先填写有效计数结果。");return}$("r_coef").value=c;$("r_exp").value=e;$("r_viab").value=v;calcResuspend();transferStatus(`已将总细胞浓度 <b>${c} × 10^${e} cells/mL</b> 和活率 <b>${fmt(v,1)}%</b> 带入重悬，并完成计算。`);setTimeout(()=>flashAndScroll("resuspend_card"),60)}
-function calcHemocytometer(){const a=parseNums($("hc_counts").value,true),d=+$("hc_dil").value,f=+$("hc_factor").value,v=+$("hc_viab").value/100;if(!(a.length&&d>0&&f>0&&v>=0&&v<=1))return showError("hc_out","请检查输入。");const avg=a.reduce((x,y)=>x+y,0)/a.length,total=avg*d*f,live=total*v;$("hc_out").innerHTML=`<div class="metrics">${metric("平均计数",fmt(avg,2))}${metric("总细胞浓度",fmt(total,0)+" cells/mL")}${metric("活细胞浓度",fmt(live,0)+" cells/mL")}</div>`}
-function calcResuspend(){const c=sciValue(+$("r_coef").value,+$("r_exp").value),v=+$("r_vol").value,a=+$("r_viab").value/100,t=sciValue(+$("r_tcoef").value,+$("r_texp").value);if(!(c>0&&v>0&&a>=0&&a<=1&&t>0))return showError("r_out","请检查输入。");const cells=c*v*a,fv=cells/t,add=fv-v;$("r_out").innerHTML=`<div class="metrics">${metric("当前总细胞浓度",sciText(c)+" cells/mL")}${metric("活细胞总数",sciText(cells)+" cells")}${metric("目标活细胞浓度",sciText(t)+" cells/mL")}${metric("目标最终体积",fmt(fv,3)+" mL")}${metric("体积变化",fmt(add,3)+" mL")}</div><div class="note">${add>=0?`补加培养液约 ${fmt(add,3)} mL。`:"目标浓度更高，需要离心浓缩。"}</div>`}
-function platePreset(){const p=$("p_plate").value;if(!p)return;$("p_wells").value=p;const v={"6":2000,"12":1000,"24":500,"48":250,"96":100,"384":50};$("p_vol").value=v[p]||100}
-function calcPlate(){const c=sciValue(+$("p_coef").value,+$("p_exp").value),n=+$("p_cells").value,w=+$("p_wells").value,v=+$("p_vol").value,o=+$("p_over").value/100;if(!(c>0&&n>0&&w>0&&v>0&&o>=0))return showError("p_out","请检查输入。");const cells=n*w*(1+o),tu=v*w*(1+o),su=cells/c*1000,mu=tu-su;$("p_out").innerHTML=`<div class="metrics">${metric("来源活细胞浓度",sciText(c)+" cells/mL")}${metric("需活细胞总数",sciText(cells)+" cells")}${metric("取来源细胞液",fmt(su,2)+" µL")}${metric("最终细胞悬液",fmt(tu,1)+" µL")}${metric("补培养基",fmt(mu,1)+" µL")}</div><div class="note">${mu>=0?`取 ${fmt(su,2)} µL 来源细胞悬液，加培养基至 ${fmt(tu,1)} µL。`:"来源细胞浓度不足，需要先浓缩。"}</div>`}
-function calcDrug(){const stock=toMgMl(+$("d_stock").value,$("d_unit").value)*1000,u=$("d_tunit").value,cs=parseNums($("d_concs").value,true).map(x=>u==="mg/mL"?x*1000:x),e=+$("d_existing").value,a=+$("d_add").value,r=+$("d_reps").value,s=+$("d_sets").value,o=+$("d_over").value/100,min=+$("d_minpip").value;if(!(stock>0&&cs.length&&e>=0&&a>0&&r>0&&s>0&&o>=0&&min>0))return showError("d_out","请检查输入。");const fv=e+a;let rows="",tot=0,small=0;cs.forEach(c=>{const wc=c*fv/a,wv=a*r*s*(1+o),ug=wc*(wv/1000),su=ug/(stock/1000);tot+=ug;const flag=c>0&&su<min;if(flag)small++;rows+=`<tr><td>${fmt(c,6)}</td><td>${fmt(wc,6)}</td><td>${fmt(wv,1)}</td><td>${fmt(ug,4)}</td><td>${fmt(su,4)}</td><td>${flag?'<span style="color:#b45309">需要中间液</span>':""}</td></tr>`});$("d_out").innerHTML=`<div class="metrics">${metric("孔内最终体积",fmt(fv,1)+" µL")}${metric("总ADC理论用量",fmt(tot,3)+" µg")}${metric("等效母液总量",fmt(tot/(stock/1000),3)+" µL")}</div><div class="scroll"><table><thead><tr><th>终浓度 µg/mL</th><th>加药液浓度 µg/mL</th><th>需加药液 µL</th><th>ADC µg</th><th>等效母液 µL</th><th>提示</th></tr></thead><tbody>${rows}</tbody></table></div><div class="note ${small?'warn':'good'}">${small?`有 ${small} 个浓度点低于最低可靠移液量 ${fmt(min)} µL，建议中间液或连续梯度。`:"直接移液体积均不低于当前阈值。"}</div>`}
-function calcAnimal(){const stock=+$("a_stock").value,d=+$("a_dose").value,vk=+$("a_volkg").value,o=+$("a_over").value/100,times=+$("a_times").value,ws=parseNums($("a_weights").value);if(!(stock>0&&d>0&&vk>0&&o>=0&&times>=1&&ws.length))return showError("a_out","请检查输入。");const work=d/vk;let rows="",tv=0,tm=0;ws.forEach((g,i)=>{const kg=g/1000,v=kg*vk,m=kg*d;tv+=v;tm+=m;rows+=`<tr><td>M${i+1}</td><td>${fmt(g,2)}</td><td>${fmt(v*1000,1)}</td><td>${fmt(m*1000,2)}</td></tr>`});const pv=tv*(1+o),pm=tm*(1+o),sv=pm/stock,dil=pv-sv;$("a_out").innerHTML=`<div class="metrics">${metric("统一工作液浓度",fmt(work,4)+" mg/mL")}${metric("本次总工作液",fmt(pv*1000,1)+" µL")}${metric("本次需母液",fmt(sv*1000,2)+" µL")}${metric("本次需稀释液",fmt(dil*1000,2)+" µL")}${metric("本次ADC量",fmt(pm,4)+" mg")}${metric(times+" 次给药总ADC",fmt(pm*times,4)+" mg")}</div><div class="scroll"><table><thead><tr><th>小鼠</th><th>体重 g</th><th>注射体积 µL</th><th>ADC µg</th></tr></thead><tbody>${rows}</tbody></table></div><div class="note">所有小鼠用同一工作液浓度，通过改变注射体积保持相同 mg/kg。</div>`}
-function virusUnitShort(u){return u==="PFU/mL"?"PFU":u==="TU/mL"?"TU":u==="IFU/mL"?"IFU":u==="TCID50/mL"?"TCID50":"infectious units"}
-function suggestDilution(v,min){if(!(v>0&&min>0)||v>=min)return null;for(const f of [10,100,1000,10000,100000]){if(v*f>=min)return {factor:f,volume:v*f}}return {factor:Math.ceil(min/v),volume:min}}
-function calcVirusMOI(){
-const t=sciValue(+$("v_tcoef").value,+$("v_texp").value),c=sciValue(+$("v_ccoef").value,+$("v_cexp").value),w=+$("v_wells").value,m=+$("v_moi").value,o=+$("v_over").value/100,min=+$("v_minpip").value,u=virusUnitShort($("v_tunit").value);
-if(!(t>0&&c>0&&w>0&&m>=0&&o>=0&&min>0))return showError("v_out","请检查输入。");
-const cells=c*w,per=c*m,total=cells*m,prep=total*(1+o),ul=prep/t*1000,perUl=per/t*1000,p=1-Math.exp(-m),s=suggestDilution(ul,min);
-const warn=s?`<div class="note warn">⚠️ 整组理论所需原病毒液仅 <b>${fmt(ul,4)} µL</b>，低于最低可靠移液量 ${fmt(min)} µL。可考虑先做约 <b>${s.factor}×</b> 中间稀释，再取约 <b>${fmt(s.volume,3)} µL</b> 中间液。具体稀释体系按病毒制剂和实验 SOP 执行。</div>`:"";
-$("v_out").innerHTML=`<div class="metrics">${metric("每孔细胞数",sciText(c)+" cells")}${metric("总细胞数",sciText(cells)+" cells")}${metric("每孔需要",sciText(per)+" "+u)}${metric("整组病毒量（未加余量）",sciText(total)+" "+u)}${metric("整组病毒量（含余量）",sciText(prep)+" "+u)}${metric("需原病毒液",fmt(ul,4)+" µL")}${metric("每孔等效原液",fmt(perUl,5)+" µL")}${metric("Poisson理论≥1次感染",fmt(p*100,2)+"%")}</div>${warn}<div class="note">MOI 是输入感染剂量，不等于实际感染率。不同病毒和细胞系的真实感染效率需要实验测定。</div>`}
-function calcReverseMOI(){
-const t=sciValue(+$("vr_tcoef").value,+$("vr_texp").value),v=+$("vr_vol").value,c=sciValue(+$("vr_ccoef").value,+$("vr_cexp").value),u=virusUnitShort($("vr_tunit").value);
-if(!(t>0&&v>=0&&c>0))return showError("vr_out","请检查输入。");
-const iu=t*v/1000,m=iu/c;
-$("vr_out").innerHTML=`<div class="metrics">${metric("实际加入病毒量",sciText(iu)+" "+u)}${metric("目标细胞数",sciText(c)+" cells")}${metric("实际 MOI",fmt(m,6))}${metric("Poisson理论≥1次感染",fmt((1-Math.exp(-m))*100,2)+"%")}</div>`}
-function calcPoisson(){
-const m=+$("vp_moi").value;if(!(m>=0))return showError("vp_out","请输入有效 MOI。");
-const p0=Math.exp(-m),p1=m*Math.exp(-m),pge1=1-p0,pge2=1-p0-p1;
-let detail="";
-if($("vp_detail").value==="1")detail=`<div class="metrics">${metric("0次感染",fmt(p0*100,3)+"%")}${metric("恰好1次",fmt(p1*100,3)+"%")}${metric("≥2次",fmt(pge2*100,3)+"%")}</div>`;
-$("vp_out").innerHTML=`<div class="metrics">${metric("MOI",fmt(m,5))}${metric("理论≥1次感染",fmt(pge1*100,3)+"%")}</div>${detail}<div class="note">理想模型：P(0)=e^-MOI；至少感染一次=1-e^-MOI。该值仅帮助理解 MOI，不等同于你的实测阳性率。</div>`}
-function calcVirusInVivo(){
-const t=sciValue(+$("vi_tcoef").value,+$("vi_texp").value),d=sciValue(+$("vi_dcoef").value,+$("vi_dexp").value),n=+$("vi_n").value,o=+$("vi_over").value/100,times=+$("vi_times").value,min=+$("vi_minpip").value,u=virusUnitShort($("vi_tunit").value);
-if(!(t>0&&d>0&&n>0&&o>=0&&times>=1&&min>0))return showError("vi_out","请检查输入。");
-const one=d*n*(1+o),ul=one/t*1000,all=one*times,allUl=all/t*1000,s=suggestDilution(ul,min);
-const warn=s?`<div class="note warn">⚠️ 单次整组理论原液体积 ${fmt(ul,4)} µL 低于最低可靠移液量，可考虑先做约 ${s.factor}× 中间稀释。</div>`:"";
-$("vi_out").innerHTML=`<div class="metrics">${metric("每只剂量",sciText(d)+" "+u+"/mouse")}${metric("单次整组病毒量",sciText(one)+" "+u)}${metric("单次需原病毒液",fmt(ul,4)+" µL")}${metric(times+"次总病毒量",sciText(all)+" "+u)}${metric(times+"次总原液",fmt(allUl,4)+" µL")}</div>${warn}`}
-function getInv(){try{return JSON.parse(localStorage.getItem("labcalc_inventory")||"[]")}catch(e){return[]}}function setInv(x){localStorage.setItem("labcalc_inventory",JSON.stringify(x))}
-function addInventory(){const x={id:Date.now(),name:$("i_name").value.trim(),batch:$("i_batch").value.trim(),conc:+$("i_conc").value,vol:+$("i_vol").value,storage:$("i_storage").value.trim(),ft:+$("i_ft").value};if(!(x.name&&x.conc>0&&x.vol>=0))return alert("请检查库存信息。");const a=getInv();a.unshift(x);setInv(a);renderInventory()}
-function useInventory(id){const a=getInv(),x=a.find(z=>z.id===id);if(!x)return;const u=+prompt(`当前 ${x.name} ${x.batch||""}：${x.vol} µL。\n请输入本次使用体积（µL）：`,"20");if(!(u>0))return;if(u>x.vol)return alert("使用量超过库存。");x.vol=+(x.vol-u).toFixed(6);setInv(a);renderInventory();saveCalc("库存扣减",`${x.name} ${x.batch||""} 使用 ${u} µL，剩余 ${x.vol} µL。`)}
-function delInventory(id){if(confirm("删除这条库存？")){setInv(getInv().filter(x=>x.id!==id));renderInventory()}}
-function renderInventory(){const a=getInv();if(!a.length){$("i_out").innerHTML='<div class="note">暂无库存记录。</div>';return}$("i_out").innerHTML=`<div class="scroll"><table><thead><tr><th>名称</th><th>批次</th><th>mg/mL</th><th>剩余 µL</th><th>剩余 mg</th><th>保存</th><th>FT</th><th>操作</th></tr></thead><tbody>${a.map(x=>`<tr><td>${x.name}</td><td>${x.batch||"—"}</td><td>${fmt(x.conc,4)}</td><td>${fmt(x.vol,3)}</td><td>${fmt(x.conc*x.vol/1000,4)}</td><td>${x.storage||"—"}</td><td>${x.ft}</td><td><button class="btn" onclick="useInventory(${x.id})">使用</button> <button class="btn danger" onclick="delInventory(${x.id})">删</button></td></tr>`).join("")}</tbody></table></div>`}
-function getHist(){try{return JSON.parse(localStorage.getItem("labcalc_history")||"[]")}catch(e){return[]}}function saveCalc(title,text){if(!text.trim())return alert("请先完成计算。");const a=getHist();a.unshift({id:Date.now(),time:new Date().toLocaleString(),title,text:text.trim().slice(0,2500)});localStorage.setItem("labcalc_history",JSON.stringify(a.slice(0,100)));alert("已保存。")}
-function clearHistory(){if(confirm("清空全部历史？")){localStorage.removeItem("labcalc_history");renderHistory()}}function renderHistory(){const a=getHist();if(!a.length){$("h_out").innerHTML='<div class="note">暂无历史记录。</div>';return}$("h_out").innerHTML=a.map(x=>`<div class="card" style="margin:9px 0"><div class="flexbetween"><b>${x.title}</b><span class="small">${x.time}</span></div><div class="small" style="white-space:pre-wrap;margin-top:7px">${x.text}</div></div>`).join("")}
-function exportData(){const d={version:1,exportedAt:new Date().toISOString(),inventory:getInv(),history:getHist()},b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="LabCalc_backup_"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href)}
-function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(Array.isArray(d.inventory))setInv(d.inventory);if(Array.isArray(d.history))localStorage.setItem("labcalc_history",JSON.stringify(d.history));renderInventory();alert("导入完成。")}catch(x){alert("文件格式错误。")}};r.readAsText(f)}
-function approx(a,b,t=1e-9){return Math.abs(a-b)<=t*Math.max(1,Math.abs(a),Math.abs(b))}
-function runSelfTests(){
-const t=[
-["C1V1 20→0.6 mg/mL, 1 mL",approx(.6/20*1000,30)],
-["动物工作液3/5",approx(3/5,.6)],
-["20g鼠@5mL/kg=100µL",approx(.020*5*1000,100)],
-["72孔×5000×1.1",approx(5000*72*1.1,396000)],
-["2.4e6 cells/mL取165µL",approx(396000/2400000*1000,165)],
-["90+10µL=>10×加药液",approx(100/10,10)],
-["血球计数结果1.8e6",approx(90*2*10000,1800000)],
-["8e6→1e6/mL=8mL",approx(8e6/1e6,8)],
-["500mL 10%FBS=50mL",approx(500*.1,50)],
-["100三倍稀释第二点",approx(100/3,33.3333333333,1e-8)],
-["MOI:24孔×1e4×0.5=1.2e5 IU",approx(24*1e4*.5,1.2e5)],
-["2e8 IU/mL时1.2e5 IU=0.6µL",approx(1.2e5/2e8*1000,.6)],
-["反算MOI:5µL×1e8÷2e5=2.5",approx((5/1000*1e8)/2e5,2.5)],
-["Poisson MOI=1=>63.212%",approx((1-Math.exp(-1))*100,63.2120558829,1e-8)],
-["病毒动物:1e7×8×1.1=8.8e7",approx(1e7*8*1.1,8.8e7)]
-];
-const p=t.filter(x=>x[1]).length;
-$("test_out").innerHTML=`<div class="note ${p===t.length?'good':'bad'}">${p}/${t.length} 项通过。</div><div class="scroll"><table><tbody>${t.map(x=>`<tr><td>${x[0]}</td><td>${x[1]?"PASS ✅":"FAIL ❌"}</td></tr>`).join("")}</tbody></table></div>`}
-const scenarios=[
-["万能配液","你有 20 mg/mL 的 T-DXd 母液，要配 1.2 mL、0.6 mg/mL 的工作液。需要取多少母液、加多少稀释液？","母液 36 µL；稀释液 1164 µL。"],
-["细胞计数","四个大格 85、92、88、95；细胞液与台盼蓝 1:1。活率按100%，细胞浓度是多少？","平均90；稀释倍数2；1.8×10^6 cells/mL。"],
-["铺板","活细胞浓度2.4×10^6 cells/mL；72孔，每孔5000 cells、100 µL，额外10%。需要多少活细胞、取多少原细胞液、最终配多少？","396,000 cells；取165 µL；最终7.92 mL；补培养基约7.755 mL。"],
-["重悬","3.0×10^6 cells/mL、2 mL，活率80%。想得到5.0×10^5 viable cells/mL，应调到多少最终体积？","活细胞4.8×10^6；最终9.6 mL；补约7.6 mL。"],
-["加药","孔内已有90 µL，加入10 µL药液，最终T-DXd为30 µg/mL。加药工作液浓度是多少？","300 µg/mL（10×工作液）。"],
-["药敏整板","T-DXd母液20 mg/mL；终浓度0、0.01、0.1、1、10、30、100 µg/mL；3复孔；孔内90 µL+加药10 µL；余量20%。观察哪些浓度触发“需要中间液”。","关键不是只看总药量：应输出10×加药液浓度、各浓度需配体积、等效母液体积，并对低于最低可靠移液量的点报警。"],
-["小鼠","8只鼠体重18.6、19.4、20.1、21.3、20.8、19.7、20.5、18.9 g；3 mg/kg；5 mL/kg；母液20 mg/mL；多配10%。求工作液浓度、每只注射体积、整组母液量。","工作液0.6 mg/mL；每只体积=体重(g)×5 µL/g，例如18.6g→93µL，21.3g→106.5µL；整组母液量用App核对。"],
-["培养基","最终500 mL完全培养基，FBS 10%，100×青链霉素配成1×。各组分多少？","FBS 50 mL；100×青链霉素5 mL；基础培养基445 mL。"],
-["MOI","每孔1×10^4 cells，共24孔，目标MOI=0.5，病毒滴度2×10^8 PFU/mL，不计余量。总共需要多少PFU、多少µL原液？","总细胞2.4×10^5；总病毒1.2×10^5 PFU；原液0.6 µL。"],
-["反向MOI","给2×10^5 cells加入5 µL、滴度1×10^8 PFU/mL的病毒。实际MOI是多少？","加入5×10^5 PFU；MOI=2.5。"],
-["Poisson","MOI=1时，理想情况下至少感染1次的细胞比例是多少？","1-e^-1≈63.21%。这是理论值，不等同于实际病毒阳性率。"],
-["动物病毒量","滴度1×10^8 PFU/mL，每只1×10^7 PFU，8只鼠，额外10%，一次给药。整组多少PFU、多少µL原液？","8.8×10^7 PFU；原病毒液880 µL。"]
-];
-function renderScenarios(){$("scenario_list").innerHTML=scenarios.map((s,i)=>`<div class="card scenario"><div><b>${i+1}. ${s[0]}</b></div><div class="q">${s[1]}</div><div class="row"><button class="btn" onclick="toggleAnswer(${i})">查看/隐藏参考答案</button></div><div class="answer" id="ans_${i}">${s[2]}</div></div>`).join("")}function toggleAnswer(i){const x=$("ans_"+i);x.style.display=x.style.display==="block"?"none":"block"}
-calcDilution();calcSeries();calcMedium();calcCounterResult();calcHemocytometer();calcResuspend();calcPlate();calcDrug();calcAnimal();renderInventory();renderHistory();renderScenarios();
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
-</script></body></html>
+(async()=>{
+  try{
+    const r=await fetch('./legacy-v1.3.html',{cache:'no-store'});
+    if(!r.ok)throw new Error('legacy '+r.status);
+    let html=await r.text();
+    html=html.replace('<span class="small">v1.3</span>','<span class="small">v1.4</span>');
+    html=html.replace('</body>','<script src="./patch-v1.4.js"><\/script></body>');
+    document.open();
+    document.write(html);
+    document.close();
+  }catch(err){
+    document.body.innerHTML='<div class="loading"><div class="loading-card"><b>加载失败</b><span>请联网后刷新页面。你的本地库存数据不会因此被删除。</span></div></div>';
+    console.error(err);
+  }
+})();
+</script>
+</body>
+</html>
